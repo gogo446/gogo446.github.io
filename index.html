@@ -4,197 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⭐Georgi's Website⭐</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
     <style>
         body {
             background-color: #007BFF;
             color: white;
             text-align: center;
             font-family: Arial, sans-serif;
-            height: 100vh;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 10px;
         }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 20px;
-            border: none;
-            border-radius: 8px;
-            background-color: white;
-            color: #007BFF;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            color: white;
-        }
-
-        /* Shake animation */
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
-        }
-
-        .shake {
-            animation: shake 0.5s ease;
-        }
-
-        /* Comment section styles */
         .comment-section {
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 20px;
+            max-width: 600px;
+            width: 80%;
             background-color: white;
             color: #007BFF;
             border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
+            padding: 20px;
+            text-align: left;
         }
-
         textarea {
             width: 100%;
             padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
             margin-bottom: 10px;
-        }
-
-        .comment-button {
-            padding: 10px 20px;
             font-size: 16px;
+        }
+        .comment-button {
+            padding: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
-        .comment-button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Comment list display */
         .comment-list {
             margin-top: 20px;
-            text-align: left;
-            max-width: 600px;
-            width: 100%;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
-
         .comment {
             background-color: #f0f0f0;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             border-radius: 5px;
-            color: #007BFF;
+            color: #333;
         }
     </style>
 </head>
 <body>
-
     <h1>Welcome to Georgi's World!</h1>
-    <button id="celebrateBtn" onclick="startConfetti()">Celebrate!</button>
 
     <!-- Comment Section -->
     <div class="comment-section">
         <h2>Leave a Comment:</h2>
-        <textarea id="commentBox" placeholder="Type your thoughts here..."></textarea>
-        <br>
+        <textarea id="commentBox" placeholder="Write your comment..."></textarea>
         <button class="comment-button" onclick="submitComment()">Submit</button>
+
+        <div class="comment-list" id="commentList">
+            <!-- Comments will be dynamically added here -->
+        </div>
     </div>
 
-    <!-- Display Comments -->
-    <div class="comment-list" id="commentList">
-        <!-- Comments will appear here -->
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        function startConfetti() {
-            // Trigger the confetti
-            const duration = 2000; // 2 seconds
-            const end = Date.now() + duration;
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 }
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 }
-                });
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
 
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            })();
+        // References
+        const commentBox = document.getElementById('commentBox');
+        const commentList = document.getElementById('commentList');
 
-            // Add shake effect to the button
-            const button = document.getElementById('celebrateBtn');
-            button.classList.add('shake');
-
-            // Remove shake class after animation ends
-            setTimeout(() => {
-                button.classList.remove('shake');
-            }, 500); // Duration of shake
-
-            // Show comment section after clicking the button
-            document.querySelector('.comment-section').style.display = 'block';
-        }
-
+        // Function to submit a comment
         function submitComment() {
-            const commentBox = document.getElementById('commentBox');
-            const commentText = commentBox.value.trim();
-
-            if (commentText) {
-                // Add comment to the list
-                addCommentToList(commentText);
-
-                // Store comment in local storage
-                const comments = JSON.parse(localStorage.getItem('comments')) || [];
-                comments.push(commentText);
-                localStorage.setItem('comments', JSON.stringify(comments));
-
-                // Clear the comment box
-                commentBox.value = '';
+            const comment = commentBox.value.trim();
+            if (comment) {
+                const timestamp = Date.now();
+                firebase.database().ref('comments/' + timestamp).set({
+                    text: comment,
+                    time: new Date().toLocaleString()
+                });
+                commentBox.value = ''; // Clear input field
             } else {
-                alert("Please write something before submitting.");
+                alert("Please write a comment before submitting.");
             }
         }
 
+        // Function to load comments
         function loadComments() {
-            const comments = JSON.parse(localStorage.getItem('comments')) || [];
-            comments.forEach(comment => {
-                addCommentToList(comment);
+            const commentsRef = firebase.database().ref('comments');
+            commentsRef.on('value', (snapshot) => {
+                // Clear the current comment list
+                commentList.innerHTML = '';
+                const comments = snapshot.val();
+                for (let id in comments) {
+                    const comment = document.createElement('div');
+                    comment.classList.add('comment');
+                    comment.textContent = `${comments[id].text} (${comments[id].time})`;
+                    commentList.appendChild(comment);
+                }
             });
         }
 
-        function addCommentToList(comment) {
-            const commentList = document.getElementById('commentList');
-            const commentElement = document.createElement('div');
-            commentElement.classList.add('comment');
-            commentElement.textContent = comment;
-            commentList.appendChild(commentElement);
-        }
-
-        // Load comments when the page is loaded
+        // Load comments on page load
         window.onload = loadComments;
     </script>
 </body>
