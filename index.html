@@ -46,6 +46,41 @@
         .shake {
             animation: shake 0.5s ease;
         }
+
+        /* Comment section styles */
+        .comment-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            color: #007BFF;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .comment-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .comment-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -57,38 +92,4 @@
     <script>
         function startConfetti() {
             // Trigger the confetti
-            var duration = 2 * 1000; // 2 seconds
-            var end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 }
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 }
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-
-            // Add shake effect to the button
-            var button = document.getElementById('celebrateBtn');
-            button.classList.add('shake');
-
-            // Remove shake class after animation ends
-            setTimeout(function() {
-                button.classList.remove('shake');
-            }, 500); // Duration of shake
-        }
-    </script>
-
-</body>
-</html>
+            var
