@@ -36,18 +36,50 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-right: 10px;
+        }
+        .comment-button:hover {
+            background-color: #0056b3;
+        }
+        .toggle-shape-button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .toggle-shape-button:hover {
+            background-color: #218838;
         }
         .comment-list {
             margin-top: 20px;
             max-height: 300px;
             overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
         .comment {
             background-color: #f0f0f0;
+            color: #333;
             padding: 10px;
             margin-bottom: 5px;
-            border-radius: 5px;
-            color: #333;
+            border-radius: 50%; /* Initial shape is a circle */
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+        .rectangle {
+            border-radius: 8px; /* Rectangle shape */
+            width: auto;
+            height: auto;
         }
     </style>
 </head>
@@ -58,7 +90,10 @@
     <div class="comment-section">
         <h2>Leave a Comment:</h2>
         <textarea id="commentBox" placeholder="Write your comment..."></textarea>
-        <button class="comment-button" onclick="submitComment()">Submit</button>
+        <div>
+            <button class="comment-button" onclick="submitComment()">Submit</button>
+            <button class="toggle-shape-button" onclick="toggleCommentShape()">Toggle Shape</button>
+        </div>
 
         <div class="comment-list" id="commentList">
             <!-- Comments will be dynamically added here -->
@@ -66,63 +101,42 @@
     </div>
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAL9f4JU-7UxRMPU5vM32quZOh5DuLKdcs",
-            authDomain: "gogo446githubio.firebaseapp.com",
-            projectId: "gogo446githubio",
-            storageBucket: "gogo446githubio.firebasestorage.app",
-            messagingSenderId: "925883336152",
-            appId: "1:925883336152:web:8dc32b210a91408ca75ead",
-            measurementId: "G-11X1Q8T8DM"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const database = getDatabase(app);
-
-        // References
+        // Initialize comments array
         const commentBox = document.getElementById('commentBox');
         const commentList = document.getElementById('commentList');
-        const commentsRef = ref(database, 'comments');
+        let isCircleShape = true; // Track the current shape of comments
 
         // Function to submit a comment
         function submitComment() {
             const comment = commentBox.value.trim();
             if (comment) {
-                push(commentsRef, {
-                    text: comment,
-                    time: new Date().toLocaleString()
-                });
+                addCommentToList(comment);
                 commentBox.value = ''; // Clear input field
             } else {
                 alert("Please write a comment before submitting.");
             }
         }
 
-        // Function to load comments
-        function loadComments() {
-            onValue(commentsRef, (snapshot) => {
-                // Clear the current comment list
-                commentList.innerHTML = '';
-                const comments = snapshot.val();
-                for (let id in comments) {
-                    const comment = document.createElement('div');
-                    comment.classList.add('comment');
-                    comment.textContent = `${comments[id].text} (${comments[id].time})`;
-                    commentList.appendChild(comment);
+        // Function to add a comment to the list
+        function addCommentToList(comment) {
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.textContent = comment;
+            commentList.appendChild(commentElement);
+        }
+
+        // Function to toggle the shape of comments
+        function toggleCommentShape() {
+            isCircleShape = !isCircleShape; // Toggle the shape state
+            const comments = document.querySelectorAll('.comment');
+            comments.forEach(comment => {
+                if (isCircleShape) {
+                    comment.classList.remove('rectangle');
+                } else {
+                    comment.classList.add('rectangle');
                 }
             });
         }
-
-        // Load comments on page load
-        window.onload = loadComments;
     </script>
 </body>
 </html>
