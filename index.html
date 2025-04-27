@@ -2,23 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Georgi's Website</title>
+    <title>⭐Georgi's Website⭐</title>
+    <style>
+        body {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: white;
+            color: #007BFF;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+    </style>
 </head>
 <body>
 
     <h1>Welcome to Georgi's World!</h1>
+    <button id="celebrateBtn" onclick="startConfetti()">Celebrate!</button>
 
-    <p>Things about Georgi:</p>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        function startConfetti() {
+            // Trigger the confetti
+            var duration = 2 * 1000; // 2 seconds
+            var end = Date.now() + duration;
 
-    <ul>
-        <li>Who is Georgi?</li>
-        <li>Georgi's Favorite Things</li>
-        <li>Fun Facts About Georgi</li>
-    </ul>
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
 
-    <p>
-        <a href="https://example.com" target="_blank">Visit Georgi's Official Website</a>
-    </p>
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Add shake effect to the button
+            var button = document.getElementById('celebrateBtn');
+            button.classList.add('shake');
+
+            // Remove shake class after animation ends
+            setTimeout(function() {
+                button.classList.remove('shake');
+            }, 500); // Duration of shake
+        }
+    </script>
 
 </body>
 </html>
