@@ -15,6 +15,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* To hide falling stars */
         }
 
         button {
@@ -47,9 +48,28 @@
             animation: shake 0.5s ease;
         }
 
+        /* Falling star animation */
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .star {
+            position: absolute;
+            font-size: 2em;
+            color: gold;
+            animation: fall 3s linear infinite;
+            pointer-events: none;
+        }
+
         /* Comment section styles */
         .comment-section {
-            display: none;
             margin-top: 40px;
             padding: 20px;
             background-color: white;
@@ -83,11 +103,19 @@
             background-color: #0056b3;
         }
 
-        /* Star emojis */
-        .stars {
-            font-size: 3em;
-            color: gold;
+        .comments {
             margin-top: 20px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -96,16 +124,22 @@
     <h1>Welcome to Georgi's World!</h1>
     <button id="celebrateBtn" onclick="startStars()">Celebrate!</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- Comment Section -->
+    <div class="comment-section">
+        <h2>Leave a Comment:</h2>
+        <textarea id="commentBox" placeholder="Type your thoughts here..."></textarea>
+        <br>
+        <button class="comment-button" onclick="submitComment()">Submit</button>
+        <div class="comments" id="commentsList">
+            <!-- Comments will appear here -->
+        </div>
+    </div>
+
     <script>
         function startStars() {
-            // Trigger the stars instead of confetti
-            var starCount = 10; // Number of stars to show
-            var starsContainer = document.createElement('div');
-            starsContainer.classList.add('stars');
-            document.body.appendChild(starsContainer);
-            for (let i = 0; i < starCount; i++) {
-                starsContainer.innerHTML += '⭐'; // Add star emojis
+            // Generate falling stars
+            for (let i = 0; i < 30; i++) {
+                createFallingStar();
             }
 
             // Add shake effect to the button
@@ -116,28 +150,37 @@
             setTimeout(function() {
                 button.classList.remove('shake');
             }, 500); // Duration of shake
-
-            // Show comment section after clicking the button
-            document.querySelector('.comment-section').style.display = 'block';
         }
-    </script>
 
-    <!-- Comment Section -->
-    <div class="comment-section">
-        <h2>Leave a Comment:</h2>
-        <textarea id="commentBox" placeholder="Type your thoughts here..."></textarea>
-        <br>
-        <button class="comment-button" onclick="submitComment()">Submit</button>
-    </div>
+        function createFallingStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.textContent = '⭐';
+            star.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+            star.style.animationDuration = Math.random() * 2 + 2 + 's'; // Random fall duration
+            document.body.appendChild(star);
 
-    <script>
+            // Remove star after animation
+            setTimeout(() => {
+                star.remove();
+            }, 3000); // Match the duration of the animation
+        }
+
         function submitComment() {
-            var comment = document.getElementById('commentBox').value;
-            if(comment) {
-                alert("Your comment: " + comment);
-                document.getElementById('commentBox').value = ''; // Clear the comment box
+            var commentBox = document.getElementById('commentBox');
+            var commentText = commentBox.value.trim();
+            if (commentText) {
+                // Add the comment to the list
+                var commentList = document.getElementById('commentsList');
+                var commentDiv = document.createElement('div');
+                commentDiv.classList.add('comment');
+                commentDiv.textContent = commentText;
+                commentList.appendChild(commentDiv);
+
+                // Clear the comment box
+                commentBox.value = '';
             } else {
-                alert("Please write something before submitting.");
+                alert('Please write something before submitting.');
             }
         }
     </script>
