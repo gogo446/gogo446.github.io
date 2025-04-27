@@ -49,6 +49,7 @@
 
         /* Comment section styles */
         .comment-section {
+            display: none;
             margin-top: 40px;
             padding: 20px;
             background-color: white;
@@ -81,15 +82,65 @@
         .comment-button:hover {
             background-color: #0056b3;
         }
+
+        /* Star emojis */
+        .stars {
+            font-size: 3em;
+            color: gold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
     <h1>Welcome to Georgi's World!</h1>
-    <button id="celebrateBtn" onclick="startConfetti()">Celebrate!</button>
+    <button id="celebrateBtn" onclick="startStars()">Celebrate!</button>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        function startConfetti() {
-            // Trigger the confetti
-            var
+        function startStars() {
+            // Trigger the stars instead of confetti
+            var starCount = 10; // Number of stars to show
+            var starsContainer = document.createElement('div');
+            starsContainer.classList.add('stars');
+            document.body.appendChild(starsContainer);
+            for (let i = 0; i < starCount; i++) {
+                starsContainer.innerHTML += '⭐'; // Add star emojis
+            }
+
+            // Add shake effect to the button
+            var button = document.getElementById('celebrateBtn');
+            button.classList.add('shake');
+
+            // Remove shake class after animation ends
+            setTimeout(function() {
+                button.classList.remove('shake');
+            }, 500); // Duration of shake
+
+            // Show comment section after clicking the button
+            document.querySelector('.comment-section').style.display = 'block';
+        }
+    </script>
+
+    <!-- Comment Section -->
+    <div class="comment-section">
+        <h2>Leave a Comment:</h2>
+        <textarea id="commentBox" placeholder="Type your thoughts here..."></textarea>
+        <br>
+        <button class="comment-button" onclick="submitComment()">Submit</button>
+    </div>
+
+    <script>
+        function submitComment() {
+            var comment = document.getElementById('commentBox').value;
+            if(comment) {
+                alert("Your comment: " + comment);
+                document.getElementById('commentBox').value = ''; // Clear the comment box
+            } else {
+                alert("Please write something before submitting.");
+            }
+        }
+    </script>
+
+</body>
+</html>
