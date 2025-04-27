@@ -11,11 +11,14 @@
             text-align: center;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 10px;
-            overflow: hidden; /* Prevent scrollbars from appearing */
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prevent scrollbars */
         }
         .comment-section {
-            margin-top: 20px;
             max-width: 600px;
             width: 80%;
             background-color: white;
@@ -23,14 +26,15 @@
             border-radius: 8px;
             padding: 20px;
             text-align: left;
-            z-index: 10;
-            position: relative;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
         textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         .comment-button {
             padding: 10px;
@@ -39,9 +43,6 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-        .comment-list {
-            display: none; /* Hide static comment list */
         }
         .floating-comment {
             position: absolute;
@@ -57,7 +58,7 @@
             align-items: center;
             justify-content: center;
             word-wrap: break-word;
-            animation: float 5s linear infinite;
+            animation: float 10s linear infinite; /* Slowed down to 10 seconds */
         }
         @keyframes float {
             0% {
@@ -79,8 +80,6 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to Georgi's World!</h1>
-
     <!-- Comment Section -->
     <div class="comment-section">
         <h2>Leave a Comment:</h2>
