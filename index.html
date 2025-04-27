@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⭐Georgi's Website⭐</title>
     <style>
         body {
@@ -15,7 +16,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* To hide falling stars */
         }
 
         button {
@@ -46,26 +46,6 @@
 
         .shake {
             animation: shake 0.5s ease;
-        }
-
-        /* Falling star animation */
-        @keyframes fall {
-            0% {
-                transform: translateY(-50px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-
-        .star {
-            position: absolute;
-            font-size: 2em;
-            color: gold;
-            animation: fall 3s linear infinite;
-            pointer-events: none;
         }
 
         /* Comment section styles */
@@ -103,26 +83,29 @@
             background-color: #0056b3;
         }
 
-        .comments {
+        /* Comment list display */
+        .comment-list {
             margin-top: 20px;
             text-align: left;
+            max-width: 600px;
+            width: 100%;
             max-height: 200px;
             overflow-y: auto;
         }
 
         .comment {
-            background-color: #f1f1f1;
-            color: #333;
+            background-color: #f0f0f0;
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            color: #007BFF;
         }
     </style>
 </head>
 <body>
 
     <h1>Welcome to Georgi's World!</h1>
-    <button id="celebrateBtn" onclick="startStars()">Celebrate!</button>
+    <button id="celebrateBtn" onclick="startConfetti()">Celebrate!</button>
 
     <!-- Comment Section -->
     <div class="comment-section">
@@ -130,60 +113,89 @@
         <textarea id="commentBox" placeholder="Type your thoughts here..."></textarea>
         <br>
         <button class="comment-button" onclick="submitComment()">Submit</button>
-        <div class="comments" id="commentsList">
-            <!-- Comments will appear here -->
-        </div>
     </div>
 
+    <!-- Display Comments -->
+    <div class="comment-list" id="commentList">
+        <!-- Comments will appear here -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        function startStars() {
-            // Generate falling stars
-            for (let i = 0; i < 30; i++) {
-                createFallingStar();
-            }
+        function startConfetti() {
+            // Trigger the confetti
+            const duration = 2000; // 2 seconds
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
 
             // Add shake effect to the button
-            var button = document.getElementById('celebrateBtn');
+            const button = document.getElementById('celebrateBtn');
             button.classList.add('shake');
 
             // Remove shake class after animation ends
-            setTimeout(function() {
+            setTimeout(() => {
                 button.classList.remove('shake');
             }, 500); // Duration of shake
-        }
 
-        function createFallingStar() {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.textContent = '⭐';
-            star.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
-            star.style.animationDuration = Math.random() * 2 + 2 + 's'; // Random fall duration
-            document.body.appendChild(star);
-
-            // Remove star after animation
-            setTimeout(() => {
-                star.remove();
-            }, 3000); // Match the duration of the animation
+            // Show comment section after clicking the button
+            document.querySelector('.comment-section').style.display = 'block';
         }
 
         function submitComment() {
-            var commentBox = document.getElementById('commentBox');
-            var commentText = commentBox.value.trim();
+            const commentBox = document.getElementById('commentBox');
+            const commentText = commentBox.value.trim();
+
             if (commentText) {
-                // Add the comment to the list
-                var commentList = document.getElementById('commentsList');
-                var commentDiv = document.createElement('div');
-                commentDiv.classList.add('comment');
-                commentDiv.textContent = commentText;
-                commentList.appendChild(commentDiv);
+                // Add comment to the list
+                addCommentToList(commentText);
+
+                // Store comment in local storage
+                const comments = JSON.parse(localStorage.getItem('comments')) || [];
+                comments.push(commentText);
+                localStorage.setItem('comments', JSON.stringify(comments));
 
                 // Clear the comment box
                 commentBox.value = '';
             } else {
-                alert('Please write something before submitting.');
+                alert("Please write something before submitting.");
             }
         }
-    </script>
 
+        function loadComments() {
+            const comments = JSON.parse(localStorage.getItem('comments')) || [];
+            comments.forEach(comment => {
+                addCommentToList(comment);
+            });
+        }
+
+        function addCommentToList(comment) {
+            const commentList = document.getElementById('commentList');
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.textContent = comment;
+            commentList.appendChild(commentElement);
+        }
+
+        // Load comments when the page is loaded
+        window.onload = loadComments;
+    </script>
 </body>
 </html>
