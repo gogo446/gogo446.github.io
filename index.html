@@ -1,47 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Teodor's personal website where he shares thoughts, ideas, and creativity!">
+    <meta name="keywords" content="Teodor, blog, personal website, thoughts, creativity">
+    <meta name="author" content="Teodor Gerov">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teodor's Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
+    <style>
+        :root {
+            --background-color: #f5f0e1; /* warm beige */
+            --primary-color: #5c715e; /* earthy green */
+            --secondary-color: #a68a64; /* soft brown */
+            --accent-color: #d9c7b5; /* light earthy accent */
+            --text-color: #333333; /* deep charcoal */
+        }
+
+        body {
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            color: var(--text-color);
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+
+        header h1 {
+            color: white;
+            margin: 0;
+            font-size: 2em;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: var(--primary-color);
+            margin-top: 30px;
+        }
+
+        p {
+            font-size: 1.3em;
+            margin: 15px 20px;
+            color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--accent-color);
+            padding: 12px 0;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .social-icons a {
+            margin: 10px;
+            font-size: 2em;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #3f729b; /* Instagram's signature blue color */
+        }
+    </style>
+</head>
 <body>
-  <div class="center-container">
     <header>
-      <h1>Welcome to My Website</h1>
-      <nav>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
+        <h1>Teodor's Website</h1>
+        <nav>
+            <a href="javascript:void(0);" onclick="showPage('home')">Home</a>
+            <a href="javascript:void(0);" onclick="showPage('about')">About</a>
+            <a href="javascript:void(0);" onclick="showPage('contact')">Contact</a>
+        </nav>
     </header>
 
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Hello! I am excited to share my website with you. This is a simple and stylish design to showcase content.</p>
-    </section>
+    <!-- Home Page -->
+    <main id="home" class="page active">
+        <h1>The Teodor Website!!</h1>
+        <p>This is going to be where I talk about things whaoooooo!!</p>
+        <p>Stay tuned for cool ideas, thoughts, and randomness... I guess</p>
+    </main>
 
-    <section id="services">
-      <h2>Services</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Web Design</h3>
-          <p>Creating beautiful and functional websites.</p>
-        </div>
-        <div class="card">
-          <h3>Development</h3>
-          <p>Building responsive and modern applications.</p>
-        </div>
-        <div class="card">
-          <h3>Support</h3>
-          <p>Providing 24/7 support for all your needs.</p>
-        </div>
-      </div>
-    </section>
+    <!-- About Page -->
+    <main id="about" class="page">
+        <h1>About Teodor</h1>
+        <p>This is the about page. You can learn more about Teodor here!</p>
+    </main>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: myemail@example.com</p>
-      <p>Phone: +123456789</p>
-    </section>
+    <!-- Contact Page -->
+    <!-- Subscription Form (Add this inside your Contact page) -->
+    <main id="contact" class="page">
+        <h1>Contact</h1>
+        <p>If you'd like to contact me, feel free to reach out via Instagram:</p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/tedigerov/" target="_blank">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+        </div>
+        
+        <h2>Subscribe for Updates</h2>
+        <p>Enter your email below to receive updates when a new story is posted on the website!</p>
+        <form id="subscription-form">
+            <input type="email" id="email" name="email" placeholder="Enter your email" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p id="success-message" style="color: green; display: none;">Thank you for subscribing!</p>
+        <p id="error-message" style="color: red; display: none;">An error occurred. Please try again.</p>
+        
+        
+        <p id="subscriber-count"></p>
+
+    
+    </main>
+
 
     <footer>
-      <p>&copy; 2025 My Pretty Website. All rights reserved.</p>
+        <p>© 2025 Teodor Gerov</p>
     </footer>
-  </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show the clicked page
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
 </body>
+</html>
