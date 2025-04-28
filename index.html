@@ -1,126 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⭐Georgi's Website⭐</title>
-    <style>
-        body {
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Prevent scrollbars */
-        }
-        .comment-section {
-            max-width: 400px;
-            width: 90%;
-            background-color: white;
-            color: #007BFF;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .comment-button {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .comment-button:hover {
-            background-color: #0056b3;
-        }
-        .floating-comment {
-            position: absolute;
-            background-color: #f0f0f0;
-            color: #007BFF;
-            padding: 10px;
-            border-radius: 50%;
-            font-size: 14px;
-            text-align: center;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            word-wrap: break-word;
-            animation: float 15s linear infinite; /* Slower floating animation */
-        }
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-            25% {
-                transform: translate(40vw, -30vh);
-            }
-            50% {
-                transform: translate(-40vw, 30vh);
-            }
-            75% {
-                transform: translate(30vw, -20vh);
-            }
-            100% {
-                transform: translate(0, 0);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Pretty Website</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Comment Section -->
-    <div class="comment-section">
-        <h2>Leave a Comment:</h2>
-        <textarea id="commentBox" placeholder="Write your comment..."></textarea>
-        <button class="comment-button" onclick="submitComment()">Submit</button>
+  <header>
+    <h1>Welcome to My Website</h1>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I am excited to share my website with you. This is a simple and stylish design to showcase content.</p>
+  </section>
+
+  <section id="services">
+    <h2>Services</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Web Design</h3>
+        <p>Creating beautiful and functional websites.</p>
+      </div>
+      <div class="card">
+        <h3>Development</h3>
+        <p>Building responsive and modern applications.</p>
+      </div>
+      <div class="card">
+        <h3>Support</h3>
+        <p>Providing 24/7 support for all your needs.</p>
+      </div>
     </div>
+  </section>
 
-    <script>
-        function getRandomPosition() {
-            const x = Math.floor(Math.random() * window.innerWidth);
-            const y = Math.floor(Math.random() * window.innerHeight);
-            return { x, y };
-        }
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: myemail@example.com</p>
+    <p>Phone: +123456789</p>
+  </section>
 
-        function submitComment() {
-            const commentBox = document.getElementById('commentBox');
-            const commentText = commentBox.value.trim();
-            if (commentText) {
-                const commentElement = document.createElement('div');
-                commentElement.classList.add('floating-comment');
-                commentElement.textContent = commentText;
-
-                // Set random position
-                const position = getRandomPosition();
-                commentElement.style.left = `${position.x}px`;
-                commentElement.style.top = `${position.y}px`;
-
-                // Append to body
-                document.body.appendChild(commentElement);
-
-                // Clear the textarea
-                commentBox.value = '';
-            } else {
-                alert('Please write a comment before submitting.');
-            }
-        }
-    </script>
+  <footer>
+    <p>&copy; 2025 My Pretty Website. All rights reserved.</p>
+  </footer>
 </body>
 </html>
